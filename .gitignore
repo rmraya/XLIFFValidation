@@ -1,0 +1,7 @@
+.DS_Store
+.cache
+package-lock.json
+Validation.war
+build
+node_modules
+WebContent/WEB-INF/classes
