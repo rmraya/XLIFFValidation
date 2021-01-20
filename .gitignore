@@ -4,4 +4,5 @@ package-lock.json
 Validation.war
 build
 node_modules
+work_folder
 WebContent/WEB-INF/classes

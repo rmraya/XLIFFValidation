@@ -14,6 +14,7 @@ package com.maxprograms.xliffvalidation.rest;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
@@ -38,7 +39,7 @@ public class VersionServlet extends HttpServlet {
             JSONObject result = new JSONObject();
             result.put(Constants.STATUS, Constants.ERROR);
             result.put(Constants.REASON, "https protocol required");
-            byte[] bytes = result.toString(2).getBytes(StandardCharsets.UTF_8);
+            byte[] bytes = result.toString().getBytes(StandardCharsets.UTF_8);
             response.setContentLength(bytes.length);
             try (ServletOutputStream output = response.getOutputStream()) {
                 output.write(bytes);
@@ -50,7 +51,8 @@ public class VersionServlet extends HttpServlet {
         JSONObject result = new JSONObject();
         result.put(Constants.STATUS, Constants.OK);
         result.put("version", Constants.VERSION + "_" + Constants.BUILD);
-        byte[] bytes = result.toString(2).getBytes(StandardCharsets.UTF_8);
+        result.put("session", UUID.randomUUID().toString());
+        byte[] bytes = result.toString().getBytes(StandardCharsets.UTF_8);
         response.setContentLength(bytes.length);
         try (ServletOutputStream output = response.getOutputStream()) {
             output.write(bytes);

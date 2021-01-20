@@ -13,6 +13,7 @@
 class App {
 
     mainURL: string;
+    session: string;
 
     constructor() {
         let path: string = location.pathname;
@@ -22,7 +23,42 @@ class App {
         }
         this.mainURL = 'https://' + location.host + path;
 
+        document.getElementById('xliffFile').addEventListener('input', () => {
+            this.validateFile();
+        });
+
         this.getVersion();
+    }
+
+    validateFile(): void {
+        let formData: FormData = new FormData();
+        let xliffFile: HTMLInputElement = document.getElementById('xliffFile') as HTMLInputElement;
+        if (xliffFile.files) {
+            formData.append('xliff', xliffFile.files[0]);
+            fetch(this.mainURL + '/upload', {
+                method: 'POST',
+                body: formData,
+                headers: [
+                    ['session', this.session],
+                    ['Accept', 'application/json']
+                ]
+            })
+                .then((response: Response) => response.json())
+                .then((json: any) => {
+                    if (json.status === 'OK') {
+                        document.getElementById('result').innerText = 'File "' + json.xliff + '" is valid XLIFF ' + json.version;    
+                    } else {
+                        document.getElementById('result').innerText = 'File "' + json.xliff + '" is not valid XLIFF. \n\nReason: ' + json.reason;    
+                    }
+                    
+                })
+                .catch((reason: any) => {
+                    console.error('Error:', reason);
+                });
+        } else {
+            window.alert('Select XLIFF file');
+            return;
+        }
     }
 
     getVersion(): void {
@@ -39,6 +75,7 @@ class App {
                     if (versionSpan) {
                         versionSpan.innerHTML = json.version;
                     }
+                    this.session = json.session;
                 } else {
                     window.alert(json.reason);
                 }

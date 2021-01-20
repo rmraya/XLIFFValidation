@@ -11,10 +11,21 @@
 </head>
 
 <body id="body">
-  <header class="bg">
+  <header>
     <h1>XLIFF Validation Service</h1>
   </header>
   <div id="mainContent" class="mainContent">
+
+
+    <div style="margin: 20px;padding: 20px; border: 1px solid grey; border-radius:4px;">
+      <div>
+        <label for="xliffFile">Select XLIFF File</label>
+        <input type="file" id="xliffFile" class="hidden" />
+      </div>
+      <div>
+        <pre id="result"></pre>
+      </div>
+    </div>
 
   </div>
   <footer id="footer">XLIFFValidation <span id="version">1.0.0</span> © 2021 <a href="https://maxprograms.com"
