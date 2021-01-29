@@ -16,6 +16,9 @@ h1 {
 	white-space: nowrap;
 }
 
+h3 {
+	white-space: nowrap;
+}
 header {
 	background: linear-gradient(to right, var(--primary-900), var(--primary-700), var(--primary-600));
 	color: var(--primaryTextColor);
@@ -65,4 +68,17 @@ label {
 label:hover {
 	background: var(--primaryDarkColor);
 	box-shadow: 0px 4px 6px var(--SECONDARY-800);
+}
+
+.flex {
+	display: flex;
+	width: 100%;
+}
+
+.card {
+	background: var(--SECONDARY-300);
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0px 4px 8px var(--SECONDARY-600);
+	margin: 16px;
 }

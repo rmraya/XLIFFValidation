@@ -46,11 +46,10 @@ class App {
                 .then((response: Response) => response.json())
                 .then((json: any) => {
                     if (json.status === 'OK') {
-                        document.getElementById('result').innerText = 'File "' + json.xliff + '" is valid XLIFF ' + json.version;    
+                        document.getElementById('result').innerText = 'File "' + json.xliff + '" is valid XLIFF ' + json.version;
                     } else {
-                        document.getElementById('result').innerText = 'File "' + json.xliff + '" is not valid XLIFF. \n\nReason: ' + json.reason;    
+                        document.getElementById('result').innerText = 'File "' + json.xliff + '" is not valid XLIFF. \n\nReason: ' + json.reason;
                     }
-                    
                 })
                 .catch((reason: any) => {
                     console.error('Error:', reason);
