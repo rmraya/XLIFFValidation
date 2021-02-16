@@ -17,18 +17,34 @@
   <div id="mainContent" class="mainContent">
 
     <div class="flex">
+
       <div style="margin: 20px;padding: 20px; border: 1px solid grey; border-radius:4px; width:100%;">
         <div>
-          <label for="xliffFile">Select XLIFF File</label>
+          <label class="button" for="xliffFile">Select XLIFF File</label>
           <input type="file" id="xliffFile" class="hidden" />
+          <br>
+          <table style="margin-top: 20px;">
+            <tr>
+              <td><input type="checkbox" id="schematron"></td>
+              <td><label for="schematron">Check XLIFF 2.0 using Schematron</label></td>
+            </tr>
+          </table>
+           
         </div>
         <div>
           <p id="result"></p>
+          <p id="schemaresult"></p>
         </div>
       </div>
+
+
       <div class="card">
-        <p>XLIFF validation is performed using <a href="https://github.com/rmraya/OpenXLIFF" target="_blank">OpenXLIFF FIlters</a>.</p>
+        <h3>We respect your privacy</h3>
+        <p>All XLIFF files are automatically deleted afyer validation. We don't keep copies.</p>
+
         <h3>Open Source</h3>
+        <p>XLIFF validation is performed using <a href="https://github.com/rmraya/OpenXLIFF" target="_blank">OpenXLIFF
+            FIlters</a>.</p>
         <p>Source code is available at <a href="https://github.com/rmraya/XLIFFValidation" target="_blank">GitHub</a>.
         </p>
         <h3>License</h3>

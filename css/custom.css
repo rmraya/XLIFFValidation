@@ -50,7 +50,7 @@ footer a:hover {
 }
 
 
-label {
+.button {
 	cursor: pointer;
 	color: var(--primaryTextColor);
 	fill: var(--primaryTextColor);
@@ -65,7 +65,7 @@ label {
 	box-shadow: 0px 2px 4px var(--SECONDARY-700);
 }
 
-label:hover {
+.button:hover {
 	background: var(--primaryDarkColor);
 	box-shadow: 0px 4px 6px var(--SECONDARY-800);
 }

@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.maxprograms.schematron.Validator;
 import com.maxprograms.validation.XliffChecker;
 import com.maxprograms.xliffvalidation.Constants;
 
@@ -60,18 +61,38 @@ public class UploadServlet extends HttpServlet {
             return;
         }
         try {
+            boolean useSchematron = request.getHeader("schematron").equalsIgnoreCase("yes");
             JSONObject result = new JSONObject();
             JSONObject uploadItem = getFileItem(request);
             File homeDir = new File(System.getenv("XLIFF_HOME"));
             File catalogFolder = new File(homeDir, "catalog");
             File catalog = new File(catalogFolder, "catalog.xml");
             XliffChecker instance = new XliffChecker();
-            if (instance.validate(uploadItem.getString("location"), catalog.getAbsolutePath())) {
+            String file = uploadItem.getString("location");
+            if (instance.validate(file, catalog.getAbsolutePath())) {
                 result.put(Constants.STATUS, Constants.OK);
                 result.put("version", instance.getVersion());
             } else {
                 result.put(Constants.STATUS, Constants.ERROR);
                 result.put(Constants.REASON, instance.getReason());
+            }
+            if (instance.getVersion().startsWith("2.") && useSchematron) {
+                Validator validator = new Validator();
+                File xslFolder = new File(homeDir, "xsl");
+                String[] stylesheets = new String[] { "xliff_core_2.1.xsl", "fs.xsl", "glossary.xsl", "itsm.xsl",
+                        "matches.xsl", "metadata.xsl", "resource_data.xsl", "size_restriction.xsl", "validation.xsl",
+                        "change_tracking.xsl" };
+                for (int i = 0; i < stylesheets.length; i++) {
+                    File stylesheet = new File(xslFolder, stylesheets[i]);
+                    if (!validator.validate(file, stylesheet.getAbsolutePath())) {
+                        result.put("schemaValidation", Constants.ERROR);
+                        result.put("schemaReason", validator.getReason());
+                        break;
+                    }
+                }
+                if (!result.has("schemaValidation")) {
+                    result.put("schemaValidation", Constants.OK);
+                }
             }
             result.put("xliff", uploadItem.getString("name"));
             byte[] bytes = result.toString().getBytes(StandardCharsets.UTF_8);
@@ -79,7 +100,7 @@ public class UploadServlet extends HttpServlet {
             try (ServletOutputStream output = response.getOutputStream()) {
                 output.write(bytes);
             }
-            File sessionDir = new File(uploadItem.getString("location")).getParentFile();
+            File sessionDir = new File(file).getParentFile();
             removeDir(sessionDir);
         } catch (Exception e) {
             logger.log(Level.ERROR, "File upload error", e);

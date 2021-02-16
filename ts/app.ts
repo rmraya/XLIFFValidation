@@ -34,13 +34,16 @@ class App {
         let formData: FormData = new FormData();
         let xliffFile: HTMLInputElement = document.getElementById('xliffFile') as HTMLInputElement;
         if (xliffFile.files) {
+            let check: HTMLInputElement = document.getElementById('schematron') as HTMLInputElement;
+            let useSchematron: string = check.checked ? "yes" : "no";
             formData.append('xliff', xliffFile.files[0]);
             fetch(this.mainURL + '/upload', {
                 method: 'POST',
                 body: formData,
                 headers: [
                     ['session', this.session],
-                    ['Accept', 'application/json']
+                    ['Accept', 'application/json'],
+                    ['schematron', useSchematron]
                 ]
             })
                 .then((response: Response) => response.json())
@@ -49,6 +52,13 @@ class App {
                         document.getElementById('result').innerText = 'File "' + json.xliff + '" is valid XLIFF ' + json.version;
                     } else {
                         document.getElementById('result').innerText = 'File "' + json.xliff + '" is not valid XLIFF. \n\nReason: ' + json.reason;
+                    }
+                    if (json.schemaValidation) {
+                        let result: string = 'Schematron result: ' + json.schemaValidation;
+                        if (json.schemaReason) {
+                            result = 'Schematron result: ' + json.schemaReason;
+                        }
+                        document.getElementById('schemaresult').innerText = result;
                     }
                 })
                 .catch((reason: any) => {
