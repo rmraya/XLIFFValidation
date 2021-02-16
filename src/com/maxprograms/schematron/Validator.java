@@ -22,23 +22,6 @@ import com.maxprograms.xml.SAXBuilder;
 
 public class Validator {
 
-	public static void main(String[] args) {
-		Validator validator = new Validator();
-		System.out.println(validator.validate("/Users/rmraya/Desktop/Patricia/2562_Modulvorschlag_GFG Benin_QP Endabnahme_FinalFMB o8 07 20_end_pc_de_fr.xlf"));
-	}
-
-	private boolean validate(String file) {
-		String[] stylesheets = new String[] { "xsl/xliff_core_2.1.xsl", "xsl/fs.xsl", "xsl/glossary.xsl",
-				"xsl/itsm.xsl", "xsl/matches.xsl", "xsl/metadata.xsl", "xsl/resource_data.xsl",
-				"xsl/size_restriction.xsl", "xsl/validation.xsl", "xsl/change_tracking.xsl" };
-		for (int i = 0; i < stylesheets.length; i++) {
-			if (!validate(file, stylesheets[i])) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	private String reason;
 
 	public String getReason() {

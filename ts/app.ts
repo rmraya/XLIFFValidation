@@ -34,6 +34,8 @@ class App {
         let formData: FormData = new FormData();
         let xliffFile: HTMLInputElement = document.getElementById('xliffFile') as HTMLInputElement;
         if (xliffFile.files) {
+            document.getElementById('result').innerText = 'Validating...';
+            document.getElementById('schemaresult').innerText = '';
             let check: HTMLInputElement = document.getElementById('schematron') as HTMLInputElement;
             let useSchematron: string = check.checked ? "yes" : "no";
             formData.append('xliff', xliffFile.files[0]);
@@ -63,6 +65,7 @@ class App {
                 })
                 .catch((reason: any) => {
                     console.error('Error:', reason);
+                    window.alert(reason);
                 });
         } else {
             window.alert('Select XLIFF file');
