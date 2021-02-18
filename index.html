@@ -8,6 +8,11 @@
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/custom.css" />
   <title>XLIFF Validation</title>
+  <script>
+    if (window.location.protocol !== 'https:') {
+      window.location = 'https://' + window.location.hostname + window.location.pathname + window.location.hash;
+    }
+  </script>
 </head>
 
 <body id="body">
@@ -29,7 +34,7 @@
               <td><label for="schematron">Check XLIFF 2.0 using Schematron</label></td>
             </tr>
           </table>
-           
+
         </div>
         <div>
           <p id="result"></p>
