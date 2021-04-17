@@ -46,29 +46,24 @@ public class UploadServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json");
-
+        JSONObject result = new JSONObject();
         StringBuffer from = request.getRequestURL();
         if (!from.toString().toLowerCase().startsWith("https://")) {
-            response.setStatus(401);
-            JSONObject result = new JSONObject();
             result.put(Constants.STATUS, Constants.ERROR);
             result.put(Constants.REASON, "https protocol required");
-            byte[] bytes = result.toString().getBytes(StandardCharsets.UTF_8);
-            response.setContentLength(bytes.length);
-            try (ServletOutputStream output = response.getOutputStream()) {
-                output.write(bytes);
-            }
+            writeOutput(result, response, 401);
             return;
         }
         try {
             boolean useSchematron = request.getHeader("schematron").equalsIgnoreCase("yes");
-            JSONObject result = new JSONObject();
             JSONObject uploadItem = getFileItem(request);
             File homeDir = new File(System.getenv("XLIFF_HOME"));
             File catalogFolder = new File(homeDir, "catalog");
             File catalog = new File(catalogFolder, "catalog.xml");
             XliffChecker instance = new XliffChecker();
             String file = uploadItem.getString("location");
+            File uploaded = new File(file);
+            result.put("xliff", uploaded.getName());
             if (instance.validate(file, catalog.getAbsolutePath())) {
                 result.put(Constants.STATUS, Constants.OK);
                 result.put("version", instance.getVersion());
@@ -94,16 +89,25 @@ public class UploadServlet extends HttpServlet {
                     result.put("schemaValidation", Constants.OK);
                 }
             }
-            result.put("xliff", uploadItem.getString("name"));
-            byte[] bytes = result.toString().getBytes(StandardCharsets.UTF_8);
-            response.setContentLength(bytes.length);
-            try (ServletOutputStream output = response.getOutputStream()) {
-                output.write(bytes);
-            }
+            writeOutput(result, response, 200);
+
             File sessionDir = new File(file).getParentFile();
             removeDir(sessionDir);
+
         } catch (Exception e) {
-            logger.log(Level.ERROR, "File upload error", e);
+            logger.log(Level.ERROR, "Validation error", e);
+            result.put(Constants.STATUS, Constants.ERROR);
+            result.put(Constants.REASON, e.getMessage());
+            writeOutput(result, response, 500);
+        }
+    }
+
+    private static void writeOutput(JSONObject json, HttpServletResponse response, int status) throws IOException {
+        byte[] bytes = json.toString().getBytes(StandardCharsets.UTF_8);
+        response.setContentLength(bytes.length);
+        response.setStatus(status);
+        try (ServletOutputStream output = response.getOutputStream()) {
+            output.write(bytes);
         }
     }
 

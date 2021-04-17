@@ -25,9 +25,10 @@
 
       <div style="margin: 20px;padding: 20px; border: 1px solid grey; border-radius:4px; width:100%;">
         <div>
-          <label class="button" for="xliffFile">Select XLIFF File</label>
-          <input type="file" id="xliffFile" class="hidden" />
-          <br>
+          <div id="dropArea" class="dropZone">
+            <span>Drop files here or</span> <label for="xliffFile">Select File</label>
+            <input type="file" id="xliffFile" class="hidden" />
+          </div>
           <table style="margin-top: 20px;">
             <tr>
               <td><input type="checkbox" id="schematron"></td>
@@ -46,12 +47,13 @@
       <div class="card">
         <h3>We respect your privacy</h3>
         <p>All XLIFF files are automatically deleted after validation. We don't keep copies.</p>
-
         <h3>Open Source</h3>
         <p>XLIFF validation is performed using <a href="https://github.com/rmraya/OpenXLIFF" target="_blank">OpenXLIFF
             FIlters</a>.</p>
         <p>Source code is available at <a href="https://github.com/rmraya/XLIFFValidation" target="_blank">GitHub</a>.
         </p>
+        <h3>Your feedback matters</h3>
+        <p>Send comments or report errors to <a href="mailto:tech@maxprograms.com">tech@maxprograms.com</a>.</p>
         <h3>License</h3>
         <p> Source code and the accompanying materials are made available under the terms of the <a
             href="https://www.eclipse.org/org/documents/epl-v10.html" target="_blank">Eclipse Public License 1.0</a>

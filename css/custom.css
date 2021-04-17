@@ -52,7 +52,7 @@ footer a:hover {
 
 .button {
 	cursor: pointer;
-	color: var(--primaryTextColor);
+	color: var(--primaryTextColor) !important;
 	fill: var(--primaryTextColor);
 	background: var(--primaryColor);
 	border: 1px solid var(--primaryColor);
@@ -81,4 +81,30 @@ footer a:hover {
 	border-radius: 8px;
 	box-shadow: 0px 4px 8px var(--SECONDARY-600);
 	margin: 16px;
+}
+
+.dropZone {
+	padding: 8px;
+	width: calc(100% - 16px);
+	height: 96px;
+	text-align: center;
+	font-size: 1.2em;
+	border-bottom: 1px solid var(--SECONDARY-600);
+}
+
+.dropZone label {
+	color: var(--primaryColor);
+}
+
+.dropZone label:hover {
+	text-decoration: underline;
+}
+
+.dropZone p {
+	text-align: center;
+}
+
+.dragOver {
+	background-color: var(--primary-100);
+	border-bottom: 1px solid var(--primaryColor);
 }

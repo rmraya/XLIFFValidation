@@ -14,6 +14,8 @@ class App {
 
     mainURL: string;
     session: string;
+    dropArea: HTMLDivElement;
+    fileInput: HTMLInputElement;
 
     constructor() {
         let path: string = location.pathname;
@@ -23,7 +25,13 @@ class App {
         }
         this.mainURL = 'https://' + location.host + path;
 
-        document.getElementById('xliffFile').addEventListener('input', () => {
+        this.dropArea = document.getElementById('dropArea') as HTMLDivElement;
+        this.dropArea.addEventListener('dragover', (ev: DragEvent) => { this.dragOverHandler(ev); });
+        this.dropArea.addEventListener('dragleave', () => { this.dragExitHandler(); });
+        this.dropArea.addEventListener('drop', (ev: DragEvent) => { this.dropHandler(ev); });
+
+        this.fileInput = document.getElementById('xliffFile') as HTMLInputElement;
+        this.fileInput.addEventListener('input', () => {
             this.validateFile();
         });
 
@@ -32,13 +40,12 @@ class App {
 
     validateFile(): void {
         let formData: FormData = new FormData();
-        let xliffFile: HTMLInputElement = document.getElementById('xliffFile') as HTMLInputElement;
-        if (xliffFile.files) {
+        if (this.fileInput.files) {
             document.getElementById('result').innerText = 'Validating...';
             document.getElementById('schemaresult').innerText = '';
             let check: HTMLInputElement = document.getElementById('schematron') as HTMLInputElement;
             let useSchematron: string = check.checked ? "yes" : "no";
-            formData.append('xliff', xliffFile.files[0]);
+            formData.append('xliff', this.fileInput.files[0]);
             fetch(this.mainURL + '/upload', {
                 method: 'POST',
                 body: formData,
@@ -47,29 +54,47 @@ class App {
                     ['Accept', 'application/json'],
                     ['schematron', useSchematron]
                 ]
-            })
-                .then((response: Response) => response.json())
-                .then((json: any) => {
-                    if (json.status === 'OK') {
-                        document.getElementById('result').innerText = 'File "' + json.xliff + '" is valid XLIFF ' + json.version;
-                    } else {
-                        document.getElementById('result').innerText = 'File "' + json.xliff + '" is not valid XLIFF. \n\nReason: ' + json.reason;
+            }).then(async (response: Response) => {
+                let json: any = await response.json();
+                if (json.status === 'OK') {
+                    document.getElementById('result').innerText = 'File "' + json.xliff + '" is valid XLIFF ' + json.version;
+                } else {
+                    document.getElementById('result').innerText = 'File "' + json.xliff + '" is not valid XLIFF. \n\nReason: ' + json.reason;
+                }
+                if (json.schemaValidation) {
+                    let result: string = 'Schematron result: ' + json.schemaValidation;
+                    if (json.schemaReason) {
+                        result = 'Schematron result: ' + json.schemaReason;
                     }
-                    if (json.schemaValidation) {
-                        let result: string = 'Schematron result: ' + json.schemaValidation;
-                        if (json.schemaReason) {
-                            result = 'Schematron result: ' + json.schemaReason;
-                        }
-                        document.getElementById('schemaresult').innerText = result;
-                    }
-                })
-                .catch((reason: any) => {
-                    console.error('Error:', reason);
-                    window.alert(reason);
-                });
+                    document.getElementById('schemaresult').innerText = result;
+                }
+            }).catch((reason: any) => {
+                console.error('Error:', JSON.stringify(reason));
+                window.alert(reason);
+            });
         } else {
             window.alert('Select XLIFF file');
             return;
+        }
+    }
+
+    dragOverHandler(event: DragEvent): void {
+        event.preventDefault();
+        this.dropArea.classList.add('dragOver');
+    }
+
+    dragExitHandler(): void {
+        this.dropArea.classList.remove('dragOver');
+    }
+
+    dropHandler(event: DragEvent): void {
+        if (event.dataTransfer.files) {
+            event.preventDefault();
+            this.fileInput.files = event.dataTransfer.files;
+            if (this.fileInput.files) {
+                this.validateFile();
+            }
+            this.dropArea.classList.remove('dragOver');
         }
     }
 
@@ -79,22 +104,20 @@ class App {
             headers: [
                 ['Accept', 'application/json']
             ]
-        })
-            .then((response: Response) => response.json())
-            .then((json: any) => {
-                if (json.status === 'OK') {
-                    let versionSpan: HTMLSpanElement = document.getElementById('version');
-                    if (versionSpan) {
-                        versionSpan.innerHTML = json.version;
-                    }
-                    this.session = json.session;
-                } else {
-                    window.alert(json.reason);
+        }).then(async (response: Response) => {
+            let json: any = await response.json();
+            if (json.status === 'OK') {
+                let versionSpan: HTMLSpanElement = document.getElementById('version');
+                if (versionSpan) {
+                    versionSpan.innerHTML = json.version;
                 }
-            })
-            .catch((reason: any) => {
-                console.error('Error:', reason);
-            });
+                this.session = json.session;
+            } else {
+                window.alert(json.reason);
+            }
+        }).catch((reason: any) => {
+            console.error('Error:', JSON.stringify(reason));
+        });
     }
 }
 
