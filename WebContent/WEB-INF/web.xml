@@ -14,7 +14,7 @@
     <servlet-class>com.maxprograms.xliffvalidation.rest.UploadServlet</servlet-class>
   </servlet>
 
-  <!--
+  
   <filter>
     <filter-name>SecurityFilter</filter-name>
     <filter-class>com.maxprograms.xliffvalidation.utils.SecurityFilter</filter-class>
@@ -25,7 +25,7 @@
     <url-pattern>/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
-  -->
+  
   <servlet-mapping>
     <servlet-name>Version</servlet-name>
     <url-pattern>/version</url-pattern>
