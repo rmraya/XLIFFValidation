@@ -23,7 +23,7 @@ You can validate your XLIFF files at [https://dev.maxprograms.com/Validation/](h
 
 - Configure an instance of [Apache Tomcat](https://tomcat.apache.org) to run in secure mode, with HTTPS protocol
 - Copy `validation.war` to Tomcat's `webapps` folder
-- Set `XLIFF_HOME` environment varialble, pointing to a folder in your server
+- Set `XLIFF_HOME` environment variable, pointing to a folder in your server
 - Copy `catalog` folder to `XLIFF_HOME/catalog`
 - Copy `xsl` folder to `XLIFF_HOME/xsl`
 - Start Tomcat
