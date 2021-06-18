@@ -1,55 +1,56 @@
 <project name="XLIFFValidation" default="build" basedir=".">
 	<description>Build file for XLIFFValidation</description>
 
-	<path id="XLIFFValidation.classpath">		
-		<pathelement location="lib/javax.servlet-api.jar"/>
-		<pathelement location="WebContent/WEB-INF/lib/h2-1.4.200.jar"/>
-		<pathelement location="WebContent/WEB-INF/lib/json.jar"/>
-		<pathelement location="WebContent/WEB-INF/lib/openxliff.jar"/>
-		<pathelement location="WebContent/WEB-INF/lib/commons-fileupload-1.4.jar"/>
+	<path id="XLIFFValidation.classpath">
+		<pathelement location="lib/javax.servlet-api.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/h2-1.4.200.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/json.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/openxliff.jar" />
+		<pathelement location="WebContent/WEB-INF/lib/commons-fileupload-1.4.jar" />
 	</path>
 
 	<target name="clean" description="Cleans this project">
-		<delete dir="WebContent/WEB-INF/classes" failonerror="true" />
+		<delete dir="WebContent/WEB-INF/classes" failonerror="false" />
 	</target>
 
 	<target name="init">
-		<mkdir dir="WebContent/WEB-INF/classes"/>
+		<mkdir dir="WebContent/WEB-INF/classes" />
 		<copy includeemptydirs="false" todir="WebContent/WEB-INF/classes">
 			<fileset dir="src">
-				<exclude name="**/*.java"/>
+				<exclude name="**/*.java" />
 			</fileset>
 		</copy>
 	</target>
 
 	<target name="compile" depends="clean,init">
 		<description>Compile Java classes</description>
-		<javac srcdir="src" destdir="WebContent/WEB-INF/classes" classpathref="XLIFFValidation.classpath" includeAntRuntime="false"/>
+		<javac srcdir="src" destdir="WebContent/WEB-INF/classes" classpathref="XLIFFValidation.classpath" includeAntRuntime="false" />
 	</target>
 
-	<target name="bundle">
-		<delete dir="build/release/" failonerror="false" />
+	<target name="typescript">
+		<delete dir="js" failonerror="false" />
 		<exec executable="npm">
 			<arg value="run-script"/>
-			<arg value="bundle"/>
+			<arg value="build"/>
 		</exec>
 	</target>
 
 	<target name="war">
-		<mkdir dir="war"/>
+		<mkdir dir="war" />
 		<copy includeemptydirs="false" todir="war">
-			<fileset dir="WebContent"/>
+			<fileset dir="WebContent" />
 		</copy>
-		<copy includeemptydirs="false" todir="war">
-			<fileset dir="build/release/" />
+		<copy includeemptydirs="false" todir="war/js">
+			<fileset dir="js/" />
+		</copy>
+		<copy includeemptydirs="false" todir="war/css">
+			<fileset dir="css/" />
 		</copy>
 		<delete file="Validation.war" failonerror="false" />
 		<war destfile="Validation.war" basedir="war" excludes="*.xcf,*.java" />
 		<delete dir="war" failonerror="true" />
 	</target>
 
-	<target name="build" depends="compile, bundle, war"/>
+	<target name="build" depends="compile, typescript, war" />
 
-	<target name="ui" depends="bundle, war"/>
-	
 </project>

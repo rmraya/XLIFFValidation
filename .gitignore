@@ -6,3 +6,4 @@ build
 node_modules
 work_folder
 WebContent/WEB-INF/classes
+js/
