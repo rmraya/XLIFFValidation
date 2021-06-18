@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="images/favicon.png">
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/custom.css" />
+  <title>XLIFF Validation</title>
+  <script>
+    if (window.location.protocol !== 'https:') {
+      window.location = 'https://' + window.location.hostname + window.location.pathname + window.location.hash;
+    }
+  </script>
+</head>
+
+<body id="body">
+  <header>
+    <h1>XLIFF Validation Service</h1>
+  </header>
+  <div id="mainContent" class="mainContent">
+
+    <div class="flex">
+
+      <div style="margin: 20px;padding: 20px; border: 1px solid grey; border-radius:4px; width:100%;">
+        <div>
+          <div id="dropArea" class="dropZone">
+            <span>Drop files here or</span> <label for="xliffFile">Select File</label>
+            <input type="file" id="xliffFile" class="hidden" />
+          </div>
+          <table style="margin-top: 20px;">
+            <tr>
+              <td><input type="checkbox" id="schematron"></td>
+              <td><label for="schematron">Check XLIFF 2.0 using Schematron</label></td>
+            </tr>
+          </table>
+
+        </div>
+        <div>
+          <p id="result"></p>
+          <p id="schemaresult"></p>
+        </div>
+      </div>
+
+
+      <div class="card">
+        <h3>We respect your privacy</h3>
+        <p>All XLIFF files are automatically deleted after validation. We don't keep copies.</p>
+        <h3>Open Source</h3>
+        <p>XLIFF validation is performed using <a href="https://github.com/rmraya/OpenXLIFF" target="_blank">OpenXLIFF
+            FIlters</a>.</p>
+        <p>Source code is available at <a href="https://github.com/rmraya/XLIFFValidation" target="_blank">GitHub</a>.
+        </p>
+        <h3>Your feedback matters</h3>
+        <p>Send comments or report errors to <a href="mailto:tech@maxprograms.com">tech@maxprograms.com</a>.</p>
+        <h3>License</h3>
+        <p> Source code and the accompanying materials are made available under the terms of the <a
+            href="https://www.eclipse.org/org/documents/epl-v10.html" target="_blank">Eclipse Public License 1.0</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <footer id="footer">XLIFFValidation <span id="version">1.0.0</span> © 2021 <a href="https://maxprograms.com"
+      target="_blank">Maxprograms</a>
+  </footer>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
