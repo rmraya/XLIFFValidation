@@ -22,6 +22,6 @@ public class Constants {
 	public static final String STATUS = "status";
 	public static final String REASON = "reason";
 	public static final String VERSION = "1.0.0";
-	public static final String BUILD = "20210618_1243";
+	public static final String BUILD = "20210619_1025";
 	public static final String OK = "OK";
 }
