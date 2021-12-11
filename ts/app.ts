@@ -68,8 +68,8 @@ class App {
                     }
                     document.getElementById('schemaresult').innerText = result;
                 }
-            }).catch((reason: any) => {
-                console.error('Error:', JSON.stringify(reason));
+            }).catch((reason: Error) => {
+                console.error('Error:', reason.message);
                 window.alert(reason);
             });
         } else {
@@ -115,8 +115,8 @@ class App {
             } else {
                 window.alert(json.reason);
             }
-        }).catch((reason: any) => {
-            console.error('Error:', JSON.stringify(reason));
+        }).catch((reason: Error) => {
+            console.error('Error:', reason.message);
         });
     }
 }
