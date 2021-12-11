@@ -45,7 +45,7 @@ public class SecurityFilter implements Filter {
 		res.addHeader("X-Permitted-Cross-Domain-Policies", "master-only");
 		res.addHeader("Content-Security-Policy", "report-uri https://dev.maxprograms.com");
 		res.addHeader("Referrer-Policy", "no-referrer-when-downgrade");
-		res.addHeader("Feature-Policy", "microphone 'none'; camera 'none'");
+		res.addHeader("Permissions-Policy", "microphone=(), camera=()");
 
 		res.setCharacterEncoding(StandardCharsets.UTF_8.name());
 		res.setContentType("text/html;charset=utf-8");

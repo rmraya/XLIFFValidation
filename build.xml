@@ -46,6 +46,9 @@
 		<copy includeemptydirs="false" todir="war/css">
 			<fileset dir="css/" />
 		</copy>
+		<copy includeemptydirs="false" todir="war/images">
+			<fileset dir="images/" />
+		</copy>
 		<delete file="Validation.war" failonerror="false" />
 		<war destfile="Validation.war" basedir="war" excludes="*.xcf,*.java" />
 		<delete dir="war" failonerror="true" />
