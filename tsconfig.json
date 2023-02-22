@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-      "target": "es5",
-      "module": "es2015",
+      "target": "ES6",
+      "module": "ES2020",
       "noImplicitAny": true,
       "jsx": "react",
       "outDir": "js",
@@ -9,7 +9,8 @@
       "lib": [
           "dom",
           "es6"
-      ]
+      ],
+      "forceConsistentCasingInFileNames": true
   },
   "include": [
       "ts/**/*"

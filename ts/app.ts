@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021-2022 Maxprograms.
+ * Copyright (c) 2021-2023 Maxprograms.
  *
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License 1.0
@@ -107,7 +107,7 @@ class App {
         }).then(async (response: Response) => {
             let json: any = await response.json();
             if (json.status === 'OK') {
-                let versionSpan: HTMLSpanElement = document.getElementById('version');
+                let versionSpan: HTMLSpanElement = document.getElementById('version') as HTMLSpanElement;
                 if (versionSpan) {
                     versionSpan.innerHTML = json.version;
                 }
