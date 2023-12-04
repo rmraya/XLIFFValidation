@@ -23,6 +23,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.maxprograms.xliffvalidation.Constants;
@@ -30,11 +31,13 @@ import com.maxprograms.xliffvalidation.Constants;
 public class SecurityFilter implements Filter {
 
 	private static Logger logger = System.getLogger(SecurityFilter.class.getName());
-	
+
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse res = (HttpServletResponse) response;
-		
+
 		res.addHeader("X-FRAME-OPTIONS", "sameorigin");
 		res.addHeader("X-XSS-Protection", "1; mode=block");
 		res.addHeader("X-Content-Type-Options", "nosniff");
@@ -48,7 +51,9 @@ public class SecurityFilter implements Filter {
 		res.addHeader("Permissions-Policy", "microphone=(), camera=()");
 
 		res.setCharacterEncoding(StandardCharsets.UTF_8.name());
-		res.setContentType("text/html;charset=utf-8");
+		if (req.getRequestURI().equals("/Validation")) {
+			res.addHeader("Content-Type", "text/html");
+		}
 		try {
 			chain.doFilter(request, response);
 		} catch (IOException e) {
@@ -62,7 +67,7 @@ public class SecurityFilter implements Filter {
 	}
 
 	@Override
-	public void init(FilterConfig filterConfig) {		
+	public void init(FilterConfig filterConfig) {
 		// do nothing
 	}
 }

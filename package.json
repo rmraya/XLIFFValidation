@@ -10,7 +10,7 @@
         "url": "https://github.com/rmraya/XLIFFValidation.git"
     },
     "devDependencies": {
-        "typescript": "^4.9.5"
+        "typescript": "^5.3.2"
     },
     "scripts": {
         "build": "tsc"

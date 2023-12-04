@@ -3,7 +3,6 @@
 
 	<path id="XLIFFValidation.classpath">
 		<pathelement location="lib/javax.servlet-api.jar" />
-		<pathelement location="WebContent/WEB-INF/lib/h2-1.4.200.jar" />
 		<pathelement location="WebContent/WEB-INF/lib/json.jar" />
 		<pathelement location="WebContent/WEB-INF/lib/openxliff.jar" />
 		<pathelement location="WebContent/WEB-INF/lib/xmljava.jar" />
