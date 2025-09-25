@@ -42,17 +42,13 @@ class App {
         let formData: FormData = new FormData();
         if (this.fileInput.files) {
             document.getElementById('result').innerText = 'Validating...';
-            document.getElementById('schemaresult').innerText = '';
-            let check: HTMLInputElement = document.getElementById('schematron') as HTMLInputElement;
-            let useSchematron: string = check.checked ? "yes" : "no";
             formData.append('xliff', this.fileInput.files[0]);
             fetch(this.mainURL + '/upload', {
                 method: 'POST',
                 body: formData,
                 headers: [
                     ['session', this.session],
-                    ['Accept', 'application/json'],
-                    ['schematron', useSchematron]
+                    ['Accept', 'application/json']
                 ]
             }).then(async (response: Response) => {
                 let json: any = await response.json();
@@ -60,13 +56,6 @@ class App {
                     document.getElementById('result').innerText = 'File "' + json.xliff + '" is valid XLIFF ' + json.version;
                 } else {
                     document.getElementById('result').innerText = 'File "' + json.xliff + '" is not valid XLIFF. \n\nReason: ' + json.reason;
-                }
-                if (json.schemaValidation) {
-                    let result: string = 'Schematron result: ' + json.schemaValidation;
-                    if (json.schemaReason) {
-                        result = 'Schematron result: ' + json.schemaReason;
-                    }
-                    document.getElementById('schemaresult').innerText = result;
                 }
             }).catch((reason: Error) => {
                 console.error('Error:', reason.message);

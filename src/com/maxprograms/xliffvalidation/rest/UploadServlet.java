@@ -27,15 +27,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.maxprograms.schematron.Validator;
-import com.maxprograms.validation.XliffChecker;
-import com.maxprograms.xliffvalidation.Constants;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.json.JSONObject;
+
+import com.maxprograms.validation.XliffChecker;
+import com.maxprograms.xliffvalidation.Constants;
 
 public class UploadServlet extends HttpServlet {
 
@@ -55,7 +54,6 @@ public class UploadServlet extends HttpServlet {
             return;
         }
         try {
-            boolean useSchematron = request.getHeader("schematron").equalsIgnoreCase("yes");
             JSONObject uploadItem = getFileItem(request);
             File homeDir = new File(System.getenv("XLIFF_HOME"));
             File catalogFolder = new File(homeDir, "catalog");
@@ -70,24 +68,6 @@ public class UploadServlet extends HttpServlet {
             } else {
                 result.put(Constants.STATUS, Constants.ERROR);
                 result.put(Constants.REASON, instance.getReason());
-            }
-            if (instance.getVersion().startsWith("2.") && useSchematron) {
-                Validator validator = new Validator();
-                File xslFolder = new File(homeDir, "xsl");
-                String[] stylesheets = new String[] { "xliff_core_2.1.xsl", "fs.xsl", "glossary.xsl", "itsm.xsl",
-                        "matches.xsl", "metadata.xsl", "resource_data.xsl", "size_restriction.xsl", "validation.xsl",
-                        "change_tracking.xsl" };
-                for (int i = 0; i < stylesheets.length; i++) {
-                    File stylesheet = new File(xslFolder, stylesheets[i]);
-                    if (!validator.validate(file, stylesheet.getAbsolutePath())) {
-                        result.put("schemaValidation", Constants.ERROR);
-                        result.put("schemaReason", validator.getReason());
-                        break;
-                    }
-                }
-                if (!result.has("schemaValidation")) {
-                    result.put("schemaValidation", Constants.OK);
-                }
             }
             writeOutput(result, response, 200);
 
