@@ -100,6 +100,10 @@ class App {
                 if (versionSpan) {
                     versionSpan.innerHTML = json.version;
                 }
+                let openxliffSpan: HTMLSpanElement = document.getElementById('openxliffVersion') as HTMLSpanElement;
+                if (openxliffSpan) {
+                    openxliffSpan.innerHTML = json.openxliffVersion;
+                }
                 this.session = json.session;
             } else {
                 window.alert(json.reason);

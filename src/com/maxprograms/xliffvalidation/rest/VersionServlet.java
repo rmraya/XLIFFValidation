@@ -51,6 +51,7 @@ public class VersionServlet extends HttpServlet {
         JSONObject result = new JSONObject();
         result.put(Constants.STATUS, Constants.OK);
         result.put("version", Constants.VERSION + "_" + Constants.BUILD);
+        result.put("openxliffVersion", com.maxprograms.converters.Constants.VERSION);
         result.put("session", UUID.randomUUID().toString());
         byte[] bytes = result.toString().getBytes(StandardCharsets.UTF_8);
         response.setContentLength(bytes.length);
